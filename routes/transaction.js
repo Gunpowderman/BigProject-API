@@ -16,12 +16,12 @@ const {
 router.get("/", transactionList);
 
 //Create Transaction
-router.get("/", createTransaction);
+router.post("/", createTransaction);
 
 //Update Transaction
-router.get("/transactionId", updateTransaction);
+router.put("/transactionId", updateTransaction);
 
 //Delete Transaction
-router.get("/transactionId", deleteTransaction);
+router.delete("/transactionId", deleteTransaction);
 
 module.exports = router;

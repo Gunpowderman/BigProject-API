@@ -16,12 +16,12 @@ const {
 router.get("/", childList);
 
 //Create Child
-router.get("/", createChild);
+router.post("/", createChild);
 
 //Update Child
-router.get("/childId", updateChild);
+router.put("/childId", updateChild);
 
 //Delete Child
-router.get("/childId", deleteChild);
+router.delete("/childId", deleteChild);
 
 module.exports = router;
