@@ -1,4 +1,4 @@
-const { sequelize } = require(".");
+const { sequelize } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define("User", {
@@ -27,9 +27,12 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     secret: {
-      type: DataTypes.DATEONLY,
+      type: DataTypes.STRING,
       allowNull: true,
     },
   });
+  (async () => {
+    await sequelize.sync({ force: false });
+  })();
   return User;
 };
