@@ -2,9 +2,9 @@
 const { Child } = require("../db/models");
 
 //**** Child List ****//
-exports.childList = async (_, res) => {
+exports.childList = async (_, res, next) => {
   try {
-    const children = await Child.findall();
+    const children = await Child.findAll();
     res.json(children);
   } catch (err) {
     next(err);
@@ -12,7 +12,7 @@ exports.childList = async (_, res) => {
 };
 
 //**** Child Create ****//
-exports.createChild = async (req, res) => {
+exports.createChild = async (req, res, next) => {
   try {
     const newChild = await Child.create(req.body);
     res.status(201).json(newChild);
@@ -22,7 +22,7 @@ exports.createChild = async (req, res) => {
 };
 
 //**** Child Update ****//
-exports.updateChild = async (req, res) => {
+exports.updateChild = async (req, res, next) => {
   const { childId } = req.params;
   try {
     const foundChild = await Child.findbypk(childId);
@@ -38,7 +38,7 @@ exports.updateChild = async (req, res) => {
 };
 
 //**** Child Delete ****//
-exports.deleteChild = async (req, res) => {
+exports.deleteChild = async (req, res, next) => {
   const { childId } = req.params;
   try {
     const foundChild = await Child.findbypk(childId);

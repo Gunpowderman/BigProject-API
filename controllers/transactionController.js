@@ -2,9 +2,9 @@
 const { Transaction } = require("../db/models");
 
 //**** Transaction List ****//
-exports.transactionList = async (_, res) => {
+exports.transactionList = async (_, res, next) => {
   try {
-    const transactions = await Transaction.findall();
+    const transactions = await Transaction.findAll();
     res.json(transactions);
   } catch (err) {
     next(err);
@@ -12,7 +12,7 @@ exports.transactionList = async (_, res) => {
 };
 
 //**** Transaction Create ****//
-exports.createTransaction = async (req, res) => {
+exports.createTransaction = async (req, res, next) => {
   try {
     const newTransaction = await Transaction.create(req.body);
     res.status(201).json(newTransaction);
@@ -22,7 +22,7 @@ exports.createTransaction = async (req, res) => {
 };
 
 //**** Transaction Update ****//
-exports.updateTransaction = async (req, res) => {
+exports.updateTransaction = async (req, res, next) => {
   const { transactionId } = req.params;
   try {
     const foundTransaction = await Transaction.findbypk(transactionId);
@@ -38,7 +38,7 @@ exports.updateTransaction = async (req, res) => {
 };
 
 //**** Transaction Delete ****//
-exports.deleteTransaction = async (req, res) => {
+exports.deleteTransaction = async (req, res, next) => {
   const { transactionId } = req.params;
   try {
     const foundTransaction = await Transaction.findbypk(transactionId);
