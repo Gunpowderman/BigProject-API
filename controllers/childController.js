@@ -21,17 +21,21 @@ exports.createChild = async (req, res, next) => {
   }
 };
 
+//**** Fetch Child Function ****//
+exports.fetchChild = async (childId, next) => {
+  try {
+    const child = await Child.findByPk(childId);
+    return child;
+  } catch (error) {
+    next(error);
+  }
+};
+
 //**** Child Update ****//
 exports.updateChild = async (req, res, next) => {
-  const { childId } = req.params;
   try {
-    const foundChild = await Child.findByPk(childId);
-    if (foundChild) {
-      await foundChild.update(req.body);
-      res.status(204).end();
-    } else {
-      res.status(404).json({ message: "Child account not found" });
-    }
+    await req.child.update(req.body);
+    res.status(204).end();
   } catch (err) {
     next(err);
   }
@@ -39,15 +43,9 @@ exports.updateChild = async (req, res, next) => {
 
 //**** Child Delete ****//
 exports.deleteChild = async (req, res, next) => {
-  const { childId } = req.params;
   try {
-    const foundChild = await Child.findByPk(childId);
-    if (foundChild) {
-      await foundChild.destroy();
-      res.status(204).end();
-    } else {
-      res.status(404).json({ message: "Child account not found" });
-    }
+    await req.child.destroy();
+    res.status(204).end();
   } catch (err) {
     next(err);
   }

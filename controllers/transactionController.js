@@ -21,17 +21,21 @@ exports.createTransaction = async (req, res, next) => {
   }
 };
 
+//**** Fetch Transaction Function ****//
+exports.fetchTransaction = async (transactionId, next) => {
+  try {
+    const transaction = await Transaction.findByPk(transactionId);
+    return transaction;
+  } catch (error) {
+    next(error);
+  }
+};
+
 //**** Transaction Update ****//
 exports.updateTransaction = async (req, res, next) => {
-  const { transactionId } = req.params;
   try {
-    const foundTransaction = await Transaction.findByPk(transactionId);
-    if (foundTransaction) {
-      await foundTransaction.update(req.body);
-      res.status(204).end();
-    } else {
-      res.status(404).json({ message: "Transaction not found" });
-    }
+    await req.transaction.update(req.body);
+    res.status(204).end();
   } catch (err) {
     next(err);
   }
@@ -39,15 +43,9 @@ exports.updateTransaction = async (req, res, next) => {
 
 //**** Transaction Delete ****//
 exports.deleteTransaction = async (req, res, next) => {
-  const { transactionId } = req.params;
   try {
-    const foundTransaction = await Transaction.findByPk(transactionId);
-    if (foundTransaction) {
-      await foundTransaction.destroy();
-      res.status(204).end();
-    } else {
-      res.status(404).json({ message: "Transaction not found" });
-    }
+    await req.transaction.destroy();
+    res.status(204).end();
   } catch (err) {
     next(err);
   }
