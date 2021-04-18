@@ -5,12 +5,14 @@ const cors = require("cors");
 //**** Imports ****//
 const db = require("./db/models");
 const transactionRoutes = require("./routes/transaction");
+const childRoutes = require("./routes/child");
 
 //**** Code ****//
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/transaction", transactionRoutes);
+app.use("/child", childRoutes);
 
 //**** Middleware ****//
 //Path not found middleware
@@ -27,7 +29,7 @@ app.use((req, res, next) => {
 //**** Start Server ****//
 const run = async () => {
   try {
-    await db.sequelize.authenticate();
+    await db.sequelize.sync();
     console.log("Connection to database succesful");
     await app.listen(8000, () => {
       console.log("The application is running on localhost:8000");
