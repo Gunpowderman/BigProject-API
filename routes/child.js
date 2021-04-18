@@ -19,9 +19,9 @@ router.get("/", childList);
 router.post("/", createChild);
 
 //Update Child
-router.put("/childId", updateChild);
+router.put("/:childId", updateChild);
 
 //Delete Child
-router.delete("/childId", deleteChild);
+router.delete("/:childId", deleteChild);
 
 module.exports = router;

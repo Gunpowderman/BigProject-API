@@ -19,9 +19,9 @@ router.get("/", transactionList);
 router.post("/", createTransaction);
 
 //Update Transaction
-router.put("/transactionId", updateTransaction);
+router.put("/:transactionId", updateTransaction);
 
 //Delete Transaction
-router.delete("/transactionId", deleteTransaction);
+router.delete("/:transactionId", deleteTransaction);
 
 module.exports = router;

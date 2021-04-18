@@ -25,7 +25,7 @@ exports.createChild = async (req, res, next) => {
 exports.updateChild = async (req, res, next) => {
   const { childId } = req.params;
   try {
-    const foundChild = await Child.findbypk(childId);
+    const foundChild = await Child.findByPk(childId);
     if (foundChild) {
       await foundChild.update(req.body);
       res.status(204).end();
@@ -41,9 +41,9 @@ exports.updateChild = async (req, res, next) => {
 exports.deleteChild = async (req, res, next) => {
   const { childId } = req.params;
   try {
-    const foundChild = await Child.findbypk(childId);
+    const foundChild = await Child.findByPk(childId);
     if (foundChild) {
-      await foundChild.destroy(req.body);
+      await foundChild.destroy();
       res.status(204).end();
     } else {
       res.status(404).json({ message: "Child account not found" });
