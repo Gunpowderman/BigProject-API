@@ -4,7 +4,7 @@ const passport = require("passport");
 const cors = require("cors");
 const userRoutes = require("./routes/users");
 
-const { localStrategy } = require("./middleware/passport");
+const { localStrategy, jwtStrategy } = require("./middleware/passport");
 
 const app = express();
 
@@ -14,6 +14,7 @@ app.use(cors());
 // Passport Setup
 app.use(passport.initialize());
 passport.use(localStrategy);
+passport.use(jwtStrategy);
 
 //body-parser
 app.use(express.json());
