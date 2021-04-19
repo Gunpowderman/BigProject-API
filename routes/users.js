@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { signup, signin } = require("../controllers/userController");
 const passport = require("passport");
-
+router.use(express.json());
 router.post("/signup", signup);
 
 router.post(
