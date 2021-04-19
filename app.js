@@ -10,7 +10,6 @@ const childRoutes = require("./routes/child");
 const userRoutes = require("./routes/users");
 const { localStrategy, jwtStrategy } = require("./middleware/passport");
 
-
 //**** Code ****//
 const app = express();
 app.use(cors());
@@ -18,7 +17,6 @@ app.use(express.json());
 app.use("/transaction", transactionRoutes);
 app.use("/child", childRoutes);
 app.use(userRoutes);
-
 
 //**** Middleware ****//
 //Path not found middleware
@@ -32,12 +30,10 @@ app.use((req, res, next) => {
   res.json({ message: err.message || "Internal Server Error" });
 });
 
-
 // Passport Setup
 app.use(passport.initialize());
 passport.use(localStrategy);
 passport.use(jwtStrategy);
-
 
 //**** Start Server ****//
 const run = async () => {
@@ -47,17 +43,9 @@ const run = async () => {
     await app.listen(8000, () => {
       console.log("The application is running on localhost:8000");
     });
-  } catch (error) {console.error("Error connecting to database: ", error); }
+  } catch (error) {
+    console.error("Error connecting to database: ", error);
+  }
 };
 
-    run();
-
-
-
-
-
-
-
-
-
-
+run();

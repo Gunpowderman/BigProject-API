@@ -2,13 +2,13 @@ const LocalStrategy = require("passport-local").Strategy;
 const { User } = require("../db/models");
 const JWTStrategy = require("passport-jwt").Strategy;
 const { fromAuthHeaderAsBearerToken } = require("passport-jwt").ExtractJwt;
+const { JWT_SECRET, JWT_EXPIRATION_MS } = require("../config/keys");
 
-
-exports.localStrategy = new LocalStrategy(async (name, password, done) => {
+exports.localStrategy = new LocalStrategy(async (email, password, done) => {
   try {
     console.log("I'm in pass");
     const user = await User.findOne({
-      where: { name }, // equivalent to { name : name }
+      where: { email }, // equivalent to { name : name }
     });
 
     const passwordsMatch = user
@@ -39,6 +39,7 @@ exports.jwtStrategy = new JWTStrategy(
       const user = await User.findByPk(jwtPayload.id);
       done(null, user); // if there is no user, this will throw a 401
     } catch (error) {
-      done(error); 
+      done(error);
+    }
   }
 );
