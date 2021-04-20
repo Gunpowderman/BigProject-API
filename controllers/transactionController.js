@@ -1,10 +1,18 @@
 //**** Imports ****//
-const { Transaction } = require("../db/models");
+const { Transaction, User, Child } = require("../db/models");
 
 //**** Transaction List ****//
 exports.transactionList = async (_, res) => {
   try {
-    const transactions = await Transaction.findall();
+    const transactions = await Transaction.findall({
+      attributes: {
+        exclude: ["createdAt", "updatedAt"],
+      },
+      include: [
+        { model: User, attributes: ["id"] },
+        { model: Child, attributes: ["id"] },
+      ],
+    });
     res.json(transactions);
   } catch (err) {
     next(err);
