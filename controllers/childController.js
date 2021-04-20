@@ -1,10 +1,18 @@
 //**** Imports ****//
-const { Child } = require("../db/models");
+const { Child, User } = require("../db/models");
 
 //**** Child List ****//
 exports.childList = async (_, res) => {
   try {
-    const children = await Child.findall();
+    const children = await Child.findall({
+      attributes: {
+        exclude: ["createdAt", "updatedAt"],
+      },
+      include: {
+        model: User,
+        attributes: ["id"],
+      },
+    });
     res.json(children);
   } catch (err) {
     next(err);

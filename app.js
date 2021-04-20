@@ -14,6 +14,12 @@ const { localStrategy, jwtStrategy } = require("./middleware/passport");
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Passport Setup
+app.use(passport.initialize());
+passport.use(localStrategy);
+// passport.use(jwtStrategy);
+
 app.use("/transaction", transactionRoutes);
 app.use("/child", childRoutes);
 app.use(userRoutes);
@@ -29,11 +35,6 @@ app.use((req, res, next) => {
   res.status(err.status || 500);
   res.json({ message: err.message || "Internal Server Error" });
 });
-
-// Passport Setup
-app.use(passport.initialize());
-passport.use(localStrategy);
-passport.use(jwtStrategy);
 
 //**** Start Server ****//
 const run = async () => {

@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 
 const { JWT_SECRET, JWT_EXPIRATION_MS } = require("../config/keys");
 
+// Sign up === Create user
 exports.signup = async (req, res, next) => {
   const { password } = req.body;
   const saltRounds = 10;
@@ -25,7 +26,9 @@ exports.signup = async (req, res, next) => {
   }
 };
 
+// Sign in
 exports.signin = (req, res) => {
+  console.log("I'm here");
   const { user } = req;
   const payload = {
     id: user.id,
@@ -35,4 +38,36 @@ exports.signin = (req, res) => {
   const token = jwt.sign(JSON.stringify(payload), JWT_SECRET);
   res.json({ token });
   console.log("exports.signin -> req", req);
+};
+
+//**** User Update ****//
+exports.updateUser = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const foundUser = await User.findbypk(userId);
+    if (foundUser) {
+      await foundUser.update(req.body);
+      res.status(204).end();
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+//**** User Delete ****//
+exports.deleteUser = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const foundUser = await User.findbypk(userId);
+    if (foundUser) {
+      await foundUser.destroy(req.body);
+      res.status(204).end();
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (err) {
+    next(err);
+  }
 };

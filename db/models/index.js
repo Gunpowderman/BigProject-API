@@ -43,4 +43,49 @@ Object.keys(db).forEach((modelName) => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+// User to Child (one to many)
+
+db.User.hasMany(db.Child, {
+  as: "children",
+  foreignKey: {
+    name: "userId",
+    alloeNull: false,
+  },
+});
+
+db.Child.belongsTo(db.User, {
+  as: "user",
+  foreignKey: "userId",
+});
+
+// User to Transaction (one to many)
+
+db.User.hasMany(db.Transaction, {
+  as: "transaction",
+  foreignKey: {
+    name: "userId",
+    alloeNull: false,
+  },
+});
+
+db.Transaction.belongsTo(db.User, {
+  as: "user",
+  foreignKey: "userId",
+});
+
+// Child to Transaction (one to many)
+
+db.Child.hasMany(db.Transaction, {
+  as: "transaction",
+  foreignKey: {
+    name: "childId",
+    alloeNull: false,
+  },
+});
+
+db.Transaction.belongsTo(db.Child, {
+  as: "child",
+  foreignKey: "childId",
+});
+
 module.exports = db;
