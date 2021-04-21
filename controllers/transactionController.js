@@ -2,15 +2,15 @@
 const { Transaction, User, Child } = require("../db/models");
 
 //**** Transaction List ****//
-exports.transactionList = async (_, res) => {
+exports.transactionList = async (_, res, next) => {
   try {
-    const transactions = await Transaction.findall({
+    const transactions = await Transaction.findAll({
       attributes: {
         exclude: ["createdAt", "updatedAt"],
       },
       include: [
-        { model: User, attributes: ["id"] },
-        { model: Child, attributes: ["id"] },
+        { model: User, as: "user", attributes: ["id"] },
+        { model: Child, as: "child", attributes: ["id"] },
       ],
     });
     res.json(transactions);
@@ -19,8 +19,8 @@ exports.transactionList = async (_, res) => {
   }
 };
 
-//**** Transaction Create ****//
-exports.createTransaction = async (req, res) => {
+//** Transaction Create **//
+exports.createTransaction = async (req, res, next) => {
   try {
     const newTransaction = await Transaction.create(req.body);
     res.status(201).json(newTransaction);
@@ -29,11 +29,21 @@ exports.createTransaction = async (req, res) => {
   }
 };
 
-//**** Transaction Update ****//
-exports.updateTransaction = async (req, res) => {
+//** Fetch Transaction Function **//
+exports.fetchTransaction = async (transactionId, next) => {
+  try {
+    const transaction = await Transaction.findByPk(transactionId);
+    return transaction;
+  } catch (error) {
+    next(error);
+  }
+};
+
+//** Transaction Update **//
+exports.updateTransaction = async (req, res, next) => {
   const { transactionId } = req.params;
   try {
-    const foundTransaction = await Transaction.findbypk(transactionId);
+    const foundTransaction = await Transaction.findByPk(transactionId);
     if (foundTransaction) {
       await foundTransaction.update(req.body);
       res.status(204).end();
@@ -44,12 +54,11 @@ exports.updateTransaction = async (req, res) => {
     next(err);
   }
 };
-
-//**** Transaction Delete ****//
-exports.deleteTransaction = async (req, res) => {
+//** Transaction Delete **//
+exports.deleteTransaction = async (req, res, next) => {
   const { transactionId } = req.params;
   try {
-    const foundTransaction = await Transaction.findbypk(transactionId);
+    const foundTransaction = await Transaction.findByPk(transactionId);
     if (foundTransaction) {
       await foundTransaction.destroy(req.body);
       res.status(204).end();

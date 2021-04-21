@@ -18,7 +18,7 @@ app.use(express.json());
 // Passport Setup
 app.use(passport.initialize());
 passport.use(localStrategy);
-// passport.use(jwtStrategy);
+passport.use(jwtStrategy);
 
 app.use("/transaction", transactionRoutes);
 app.use("/child", childRoutes);
@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 });
 
 //Error handling middleware
-app.use((req, res, next) => {
+app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.json({ message: err.message || "Internal Server Error" });
 });

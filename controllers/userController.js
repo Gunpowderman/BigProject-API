@@ -27,7 +27,7 @@ exports.signup = async (req, res, next) => {
 };
 
 // Sign in
-exports.signin = (req, res) => {
+exports.signin = (req, res, next) => {
   console.log("I'm here");
   const { user } = req;
   const payload = {
@@ -41,10 +41,13 @@ exports.signin = (req, res) => {
 };
 
 //**** User Update ****//
-exports.updateUser = async (req, res) => {
+exports.updateUser = async (req, res, next) => {
   const { userId } = req.params;
+  if (req.body.password) {
+    delete req.body.password;
+  }
   try {
-    const foundUser = await User.findbypk(userId);
+    const foundUser = await User.findByPk(userId);
     if (foundUser) {
       await foundUser.update(req.body);
       res.status(204).end();
@@ -57,10 +60,10 @@ exports.updateUser = async (req, res) => {
 };
 
 //**** User Delete ****//
-exports.deleteUser = async (req, res) => {
+exports.deleteUser = async (req, res, next) => {
   const { userId } = req.params;
   try {
-    const foundUser = await User.findbypk(userId);
+    const foundUser = await User.findByPk(userId);
     if (foundUser) {
       await foundUser.destroy(req.body);
       res.status(204).end();

@@ -21,8 +21,16 @@ router.post(
 );
 
 //Update User
-router.get("/userId", updateUser);
+router.put(
+  "/:userId",
+  passport.authenticate("jwt", { session: false }),
+  updateUser
+);
 
 //Delete User
-router.get("/userId", deleteUser);
+router.delete(
+  "/:userId",
+  passport.authenticate("jwt", { session: false }),
+  deleteUser
+);
 module.exports = router;
