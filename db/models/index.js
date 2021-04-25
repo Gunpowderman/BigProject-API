@@ -61,7 +61,7 @@ db.Child.belongsTo(db.User, {
 // User to Transaction (one to many)
 
 db.User.hasMany(db.Transaction, {
-  as: "transaction",
+  as: "transactions",
   foreignKey: {
     name: "userId",
     alloeNull: false,
@@ -76,7 +76,7 @@ db.Transaction.belongsTo(db.User, {
 // Child to Transaction (one to many)
 
 db.Child.hasMany(db.Transaction, {
-  as: "transaction",
+  as: "transactions",
   foreignKey: {
     name: "childId",
     alloeNull: false,

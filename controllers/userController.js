@@ -27,7 +27,7 @@ exports.signup = async (req, res, next) => {
 };
 
 // Sign in
-exports.signin = (req, res) => {
+exports.signin = (req, res, next) => {
   console.log("I'm here");
   const { user } = req;
   const payload = {
@@ -41,26 +41,31 @@ exports.signin = (req, res) => {
 };
 
 //**** User Update ****//
-exports.updateUser = async (req, res) => {
-  const { userId } = req.params;
+exports.updateUser = async (req, res, next) => {
+  if (req.body.password) {
+    delete req.body.password;
+  }
   try {
-    const foundUser = await User.findbypk(userId);
-    if (foundUser) {
-      await foundUser.update(req.body);
-      res.status(204).end();
-    } else {
-      res.status(404).json({ message: "User not found" });
-    }
+    await req.user.update(req.body);
+    res.status(204).end();
   } catch (err) {
     next(err);
   }
 };
 
+//**** User Fetch ****//
+exports.fetchUser = async (req, res, next) => {
+  if (req.user.password) {
+    delete req.user.password;
+  }
+  res.json(req.user);
+};
+
 //**** User Delete ****//
-exports.deleteUser = async (req, res) => {
+exports.deleteUser = async (req, res, next) => {
   const { userId } = req.params;
   try {
-    const foundUser = await User.findbypk(userId);
+    const foundUser = await User.findByPk(userId);
     if (foundUser) {
       await foundUser.destroy(req.body);
       res.status(204).end();
