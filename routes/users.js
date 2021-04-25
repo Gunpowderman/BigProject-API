@@ -5,6 +5,7 @@ const {
   signin,
   updateUser,
   deleteUser,
+  fetchUser,
 } = require("../controllers/userController");
 const passport = require("passport");
 
@@ -21,11 +22,10 @@ router.post(
 );
 
 //Update User
-router.put(
-  "/:userId",
-  passport.authenticate("jwt", { session: false }),
-  updateUser
-);
+router.put("/", passport.authenticate("jwt", { session: false }), updateUser);
+
+//Fetch User
+router.get("/", passport.authenticate("jwt", { session: false }), fetchUser);
 
 //Delete User
 router.delete(

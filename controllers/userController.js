@@ -42,21 +42,23 @@ exports.signin = (req, res, next) => {
 
 //**** User Update ****//
 exports.updateUser = async (req, res, next) => {
-  const { userId } = req.params;
   if (req.body.password) {
     delete req.body.password;
   }
   try {
-    const foundUser = await User.findByPk(userId);
-    if (foundUser) {
-      await foundUser.update(req.body);
-      res.status(204).end();
-    } else {
-      res.status(404).json({ message: "User not found" });
-    }
+    await req.user.update(req.body);
+    res.status(204).end();
   } catch (err) {
     next(err);
   }
+};
+
+//**** User Fetch ****//
+exports.fetchUser = async (req, res, next) => {
+  if (req.user.password) {
+    delete req.user.password;
+  }
+  res.json(req.user);
 };
 
 //**** User Delete ****//
