@@ -16,6 +16,9 @@ exports.signup = async (req, res, next) => {
     const payload = {
       id: newUser.id,
       email: newUser.email,
+      name: newUser.name,
+      salary: newUser.salary,
+      salaryDate: newUser.salaryDate,
       exp: Date.now() + JWT_EXPIRATION_MS,
     };
     const token = jwt.sign(JSON.stringify(payload), JWT_SECRET);
