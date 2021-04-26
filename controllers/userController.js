@@ -32,6 +32,9 @@ exports.signin = (req, res, next) => {
   const { user } = req;
   const payload = {
     id: user.id,
+    name: user.name,
+    salary: user.salary,
+    salaryDate: user.salaryDate,
     email: user.email,
     exp: Date.now() + parseInt(JWT_EXPIRATION_MS), // the token will expire 15 minutes from when it's generated
   };

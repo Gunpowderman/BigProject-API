@@ -30,7 +30,11 @@ router.param("childId", async (req, res, next, childId) => {
 //**** Code ****//
 
 //List Children
-router.get("/", passport.authenticate("jwt", { session: false }), childList);
+router.get(
+  "/:userId",
+  passport.authenticate("jwt", { session: false }),
+  childList
+);
 
 //Create Child
 router.post("/", passport.authenticate("jwt", { session: false }), createChild);

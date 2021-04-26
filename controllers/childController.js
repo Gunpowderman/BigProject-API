@@ -2,16 +2,13 @@
 const { Child, User } = require("../db/models");
 
 //**** Child List ****//
-exports.childList = async (_, res, next) => {
+exports.childList = async (req, res, next) => {
   try {
+    console.log(req.params);
+    let x = req.params.userId;
     const children = await Child.findAll({
-      attributes: {
-        exclude: ["createdAt", "updatedAt"],
-      },
-      include: {
-        model: User,
-        as: "user",
-        attributes: ["id"],
+      where: {
+        userId: x,
       },
     });
     res.json(children);
@@ -59,3 +56,16 @@ exports.deleteChild = async (req, res, next) => {
     next(err);
   }
 };
+
+// const children = await Child.findAll({
+//   attributes: {
+//     exclude: ["createdAt", "updatedAt"],
+//   },
+//   include: {
+//     model: User,
+//     as: "user",
+//     attributes: ["id"],
+//   },
+// });
+// res.json(children);
+// child.userId == req.param.userId
